@@ -14,7 +14,7 @@ Gas Management: Agents often fail with CoinBalanceNotEnough or ObjectInUse error
 
 Data Formatting: RPC nodes return raw MIST integers (e.g., 1000000000), which confuse AI models expecting 1.0 SUI.
 
-🛠️ The Solution: pysuiagent
+## 🛠️ The Solution: pysuiagent
 
 This SDK acts as a "Translation Layer" between your AI model and the Sui Network.
 
@@ -24,7 +24,7 @@ This SDK acts as a "Translation Layer" between your AI model and the Sui Network
 
 ✅ Safety First: Includes a dry_run mode to simulate transactions before execution.
 
-📦 Installation
+## 📦 Installation
 
 1. Clone the repository
 git clone [https://github.com/snigdho179/pysuiagent.git](https://github.com/snigdho179/pysuiagent.git)
@@ -35,23 +35,16 @@ pip install pysui httpx
 
 
 
-⚡ Quick Start (AI Agent)
+## ⚡ Quick Start (AI Agent)
 
 We include a pre-built AI Interface (agent.py) that accepts natural language commands.
 
 python agent.py
 
 
+### 🗣️ Available Voice/Text Commands
 
-🗣️ Available Voice/Text Commands
-
-User Command
-
-Executed Function
-
-Description
-
-"Check balance"
+#### Check balance
 
 agent.balance()
 
