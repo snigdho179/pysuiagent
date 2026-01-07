@@ -1,4 +1,4 @@
-🤖 pysuiagent (Python Sui Agent SDK)
+# 🤖 pysuiagent (Python Sui Agent SDK)
 
 pysuiagent is a semantic, high-level Python SDK designed to bridge the gap between AI Agents (LLMs) and the Sui Blockchain.
 
@@ -26,11 +26,11 @@ This SDK acts as a "Translation Layer" between your AI model and the Sui Network
 
 📦 Installation
 
-# 1. Clone the repository
+1. Clone the repository
 git clone [https://github.com/snigdho179/pysuiagent.git](https://github.com/snigdho179/pysuiagent.git)
 cd pysuiagent
 
-# 2. Install dependencies
+2. Install dependencies
 pip install pysui httpx
 
 
