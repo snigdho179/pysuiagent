@@ -1,0 +1,26 @@
+# --- Security (CRITICAL) ---
+wallet.json
+.env
+*.pem
+*.key
+
+# --- Python Basics ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Logs & Databases ---
+*.log
+*.sqlite
+*.db
+
+# --- OS Junk ---
+.DS_Store
+Thumbs.db
