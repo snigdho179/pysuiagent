@@ -1,125 +1,150 @@
-### pysuiagent
-SuiAgent SDK 🌊
+🤖 pysuiagent (Python Sui Agent SDK)
 
-SuiAgent is a professional, high-level Python SDK designed to empower AI Agents and developers to interact seamlessly with the Sui Blockchain.
+pysuiagent is a semantic, high-level Python SDK designed to bridge the gap between AI Agents (LLMs) and the Sui Blockchain.
 
-Built on top of the powerful pysui library, it abstracts away the complexities of cryptographic signatures, Programmable Transaction Blocks (PTB), and gas management, offering a clean, human-readable API.
+It abstracts away the complexities of Programmable Transaction Blocks (PTB), Gas Coin management, and BCS serialization, allowing developers to execute financial actions using simple, human-readable methods.
 
-##🚀 Key Features
+🚀 The Problem
 
-#🔑 Automated Wallet Management
+Building AI Agents on Sui is currently too hard.
 
-Automatically generates a secure ED25519 keypair on first run.
+Complex serialization: LLMs hallucinate when trying to construct raw BCS transactions.
 
-Persists credentials locally in wallet.json for stateful agent sessions.
+Gas Management: Agents often fail with CoinBalanceNotEnough or ObjectInUse errors when trying to pay for gas.
 
-Auto-loads existing wallets for continuous operation.
+Data Formatting: RPC nodes return raw MIST integers (e.g., 1000000000), which confuse AI models expecting 1.0 SUI.
 
-#💸 Smart Transfers (PTB)
+🛠️ The Solution: pysuiagent
 
-Implements the modern "Split from Gas" strategy using Programmable Transaction Blocks.
+This SDK acts as a "Translation Layer" between your AI model and the Sui Network.
 
-Eliminates "insufficient gas" errors by dynamically splitting coins from the gas object.
+✅ Smart Gas Logic: Automatically uses the split_coin(gas) PTB strategy to prevent object locking errors.
 
-Includes built-in safety checks and error handling for on-chain execution.
+✅ AI-Native Data: Returns clean float values for balances and semantic status updates.
 
-#🚰 Integrated Faucet Access
+✅ Safety First: Includes a dry_run mode to simulate transactions before execution.
 
-Programmatic access to the Sui Testnet Faucet.
+📦 Installation
 
-Allows agents to self-fund their wallets when balances are low.
+# 1. Clone the repository
+git clone [https://github.com/snigdho179/pysuiagent.git](https://github.com/snigdho179/pysuiagent.git)
+cd pysuiagent
 
-#⚡ Simplified State Access
-
-One-line methods to retrieve real-time balances (automatically converted from MIST to SUI).
-
-Instant access to wallet addresses and digest verification.
-
-#🛠️ Installation
-
-Ensure you have Python 3.10+ installed.
-
-Install Dependencies:
-
+# 2. Install dependencies
 pip install pysui httpx
 
 
-Add the SDK:
-Simply drop pysuiagent.py into your project directory.
 
-##📖 Usage Guide
+⚡ Quick Start (AI Agent)
 
-#1. Initialization
+We include a pre-built AI Interface (agent.py) that accepts natural language commands.
 
-The SDK handles connection to the Sui Testnet and wallet setup automatically.
+python agent.py
+
+
+
+🗣️ Available Voice/Text Commands
+
+User Command
+
+Executed Function
+
+Description
+
+"Check balance"
+
+agent.balance()
+
+Returns float SUI balance.
+
+"What is my address?"
+
+agent.address
+
+Returns wallet address string.
+
+"Give me money"
+
+agent.req_faucet()
+
+Auto-funds wallet via Testnet Faucet.
+
+"Simulate sending 0.1 to..."
+
+agent.dry_transfer()
+
+Runs a safety check (no gas spent).
+
+"Send 0.5 SUI to 0x..."
+
+agent.transfer()
+
+Executes real on-chain payment.
+
+📚 SDK API Reference
+
+If you are building your own bot, import the SuiAgent class from pysuiagent.py.
 
 from pysuiagent import SuiAgent
 
- This will:
- 1. Look for 'wallet.json'
- 2. If missing, create a NEW wallet and save it
- 3. Connect to Sui Testnet
 agent = SuiAgent()
 
-print(f"🤖 Agent Active at: {agent.address}")
 
 
-#2. Checking Balance
+class SuiAgent()
 
-Get the clean float value of your SUI balance (no need to calculate decimals).
+Initializes the connection to Sui Testnet. Automatically loads wallet.json or creates a new keypair if none exists.
 
-balance = agent.balance()
-print(f"💰 Current Balance: {balance} SUI")
+1. balance() -> float
 
+Fetches all Coin Objects owned by the address, sums their MIST value, and converts to SUI.
 
-3. Self-Funding (Faucet)
+Returns: float (e.g., 1.54)
 
-If your agent is running low on gas, it can request funds autonomously.
+Why it's better: Standard RPCs return a list of complex objects. This returns a single number an AI can understand.
 
-if agent.balance() < 1.0:
-    print("🚰 Requesting funds from faucet...")
-    success = agent.req_faucet()
-    if success:
-        print("✅ Faucet request sent!")
+2. transfer(recipient: str, amount: float) -> Optional[str]
 
+The core "Agentic" function. It handles the complex "Gas Split" logic automatically.
 
-#4. Sending Tokens
+Parameters:
 
-Transfer SUI to another address securely.
+recipient: 0x... address string.
 
-recipient = "0x..." # Replace with valid Sui address
-amount = 0.5        # Amount in SUI
+amount: Amount in SUI (e.g., 0.01).
 
-tx_digest = agent.transfer(recipient, amount)
+Returns: Transaction Digest ID (str) or None if failed.
 
-if tx_digest:
-    print(f"🚀 Transaction confirmed! Digest: {tx_digest}")
-else:
-    print("❌ Transaction failed.")
+Under the Hood:
 
+Creates a Programmable Transaction Block (PTB).
 
-#5. Dry Run (Simulation)
+Calls tx.split_coin(gas, amount) to slice the payment directly from the gas object.
 
-Preview transaction effects before spending real gas.
+Transfers the new object to the recipient.
 
-simulation = agent.dry_transfer(recipient, 0.5)
-print("Simulation result:", simulation)
+Signs and executes.
 
+3. req_faucet() -> bool
 
-##🏗️ Architecture
+Connects to the official Sui Testnet Faucet to request funds.
 
-Wallet Persistence
+Returns: True if request accepted, False if rate-limited.
 
-The SDK uses a wallet.json file to store the mnemonic phrase and address.
+4. dry_transfer(recipient: str, amount: float) -> dict
 
-⚠️ Security Note: This file contains your private key (mnemonic). Ensure it is added to your .gitignore and never shared publicly.
+Runs the transaction through the node's dryRun endpoint.
 
-Transaction Strategy
+Use Case: Allows an AI Agent to "Think" about a transaction and check for errors/gas costs before actually spending money.
 
-SuiAgent uses a Programmable Transaction Block (PTB) approach for transfers. Instead of selecting a specific coin object, it splits the transfer amount directly from the gas coin used for the transaction. This ensures higher success rates and simpler coin management.
+🛡️ Security & Disclaimer
 
-##📄 License
+Proof of Concept: This software is a submission for the Sui Grant Program.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Key Storage: Private keys are stored locally in wallet.json. Do not share this file.
 
-Built for the Sui Ecosystem 💧
+Testnet Only: Default configuration is set to fullnode.testnet.sui.io.
+
+📜 License
+
+MIT License. Free to use for any AI x Crypto experiment.
