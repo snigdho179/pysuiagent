@@ -1,13 +1,13 @@
-# pysuiagent
+### pysuiagent
 SuiAgent SDK 🌊
 
 SuiAgent is a professional, high-level Python SDK designed to empower AI Agents and developers to interact seamlessly with the Sui Blockchain.
 
 Built on top of the powerful pysui library, it abstracts away the complexities of cryptographic signatures, Programmable Transaction Blocks (PTB), and gas management, offering a clean, human-readable API.
 
-🚀 Key Features
+##🚀 Key Features
 
-🔑 Automated Wallet Management
+#🔑 Automated Wallet Management
 
 Automatically generates a secure ED25519 keypair on first run.
 
@@ -15,7 +15,7 @@ Persists credentials locally in wallet.json for stateful agent sessions.
 
 Auto-loads existing wallets for continuous operation.
 
-💸 Smart Transfers (PTB)
+#💸 Smart Transfers (PTB)
 
 Implements the modern "Split from Gas" strategy using Programmable Transaction Blocks.
 
@@ -23,19 +23,19 @@ Eliminates "insufficient gas" errors by dynamically splitting coins from the gas
 
 Includes built-in safety checks and error handling for on-chain execution.
 
-🚰 Integrated Faucet Access
+#🚰 Integrated Faucet Access
 
 Programmatic access to the Sui Testnet Faucet.
 
 Allows agents to self-fund their wallets when balances are low.
 
-⚡ Simplified State Access
+#⚡ Simplified State Access
 
 One-line methods to retrieve real-time balances (automatically converted from MIST to SUI).
 
 Instant access to wallet addresses and digest verification.
 
-🛠️ Installation
+#🛠️ Installation
 
 Ensure you have Python 3.10+ installed.
 
@@ -47,24 +47,24 @@ pip install pysui httpx
 Add the SDK:
 Simply drop pysuiagent.py into your project directory.
 
-📖 Usage Guide
+##📖 Usage Guide
 
-1. Initialization
+#1. Initialization
 
 The SDK handles connection to the Sui Testnet and wallet setup automatically.
 
 from pysuiagent import SuiAgent
 
-# This will:
-# 1. Look for 'wallet.json'
-# 2. If missing, create a NEW wallet and save it
-# 3. Connect to Sui Testnet
+ This will:
+ 1. Look for 'wallet.json'
+ 2. If missing, create a NEW wallet and save it
+ 3. Connect to Sui Testnet
 agent = SuiAgent()
 
 print(f"🤖 Agent Active at: {agent.address}")
 
 
-2. Checking Balance
+#2. Checking Balance
 
 Get the clean float value of your SUI balance (no need to calculate decimals).
 
@@ -83,7 +83,7 @@ if agent.balance() < 1.0:
         print("✅ Faucet request sent!")
 
 
-4. Sending Tokens
+#4. Sending Tokens
 
 Transfer SUI to another address securely.
 
@@ -98,7 +98,7 @@ else:
     print("❌ Transaction failed.")
 
 
-5. Dry Run (Simulation)
+#5. Dry Run (Simulation)
 
 Preview transaction effects before spending real gas.
 
@@ -106,7 +106,7 @@ simulation = agent.dry_transfer(recipient, 0.5)
 print("Simulation result:", simulation)
 
 
-🏗️ Architecture
+##🏗️ Architecture
 
 Wallet Persistence
 
@@ -118,7 +118,7 @@ Transaction Strategy
 
 SuiAgent uses a Programmable Transaction Block (PTB) approach for transfers. Instead of selecting a specific coin object, it splits the transfer amount directly from the gas coin used for the transaction. This ensures higher success rates and simpler coin management.
 
-📄 License
+##📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
