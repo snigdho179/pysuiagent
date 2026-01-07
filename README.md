@@ -27,10 +27,13 @@ This SDK acts as a "Translation Layer" between your AI model and the Sui Network
 ## 📦 Installation
 
 1. Clone the repository
+
 git clone [https://github.com/snigdho179/pysuiagent.git](https://github.com/snigdho179/pysuiagent.git)
+
 cd pysuiagent
 
-2. Install dependencies
+3. Install dependencies
+
 pip install pysui httpx
 
 
@@ -44,37 +47,37 @@ python agent.py
 
 ### 🗣️ Available Voice/Text Commands
 
-#### Check balance
+#### 1.Check balance
 
 agent.balance()
 
 Returns float SUI balance.
 
-"What is my address?"
+#### 2.What is my address?
 
 agent.address
 
 Returns wallet address string.
 
-"Give me money"
+#### 3.Give me money
 
 agent.req_faucet()
 
 Auto-funds wallet via Testnet Faucet.
 
-"Simulate sending 0.1 to..."
+#### 4.Simulate sending 0.1 to 0x(adress)
 
 agent.dry_transfer()
 
 Runs a safety check (no gas spent).
 
-"Send 0.5 SUI to 0x..."
+#### 5.Send 0.5 SUI to 0x...
 
 agent.transfer()
 
 Executes real on-chain payment.
 
-📚 SDK API Reference
+## 📚 SDK API Reference
 
 If you are building your own bot, import the SuiAgent class from pysuiagent.py.
 
@@ -84,11 +87,11 @@ agent = SuiAgent()
 
 
 
-class SuiAgent()
+### class SuiAgent()
 
 Initializes the connection to Sui Testnet. Automatically loads wallet.json or creates a new keypair if none exists.
 
-1. balance() -> float
+#### 1. balance() -> float
 
 Fetches all Coin Objects owned by the address, sums their MIST value, and converts to SUI.
 
@@ -96,7 +99,7 @@ Returns: float (e.g., 1.54)
 
 Why it's better: Standard RPCs return a list of complex objects. This returns a single number an AI can understand.
 
-2. transfer(recipient: str, amount: float) -> Optional[str]
+#### 2. transfer(recipient: str, amount: float) -> Optional[str]
 
 The core "Agentic" function. It handles the complex "Gas Split" logic automatically.
 
@@ -118,19 +121,19 @@ Transfers the new object to the recipient.
 
 Signs and executes.
 
-3. req_faucet() -> bool
+#### 3. req_faucet() -> bool
 
 Connects to the official Sui Testnet Faucet to request funds.
 
 Returns: True if request accepted, False if rate-limited.
 
-4. dry_transfer(recipient: str, amount: float) -> dict
+#### 4. dry_transfer(recipient: str, amount: float) -> dict
 
 Runs the transaction through the node's dryRun endpoint.
 
 Use Case: Allows an AI Agent to "Think" about a transaction and check for errors/gas costs before actually spending money.
 
-🛡️ Security & Disclaimer
+## 🛡️ Security & Disclaimer
 
 Proof of Concept: This software is a submission for the Sui Grant Program.
 
@@ -138,6 +141,6 @@ Key Storage: Private keys are stored locally in wallet.json. Do not share this f
 
 Testnet Only: Default configuration is set to fullnode.testnet.sui.io.
 
-📜 License
+## 📜 License
 
 MIT License. Free to use for any AI x Crypto experiment.
