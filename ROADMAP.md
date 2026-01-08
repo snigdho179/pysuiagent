@@ -1,4 +1,4 @@
-# 🗺️ Sui-Py-Agent Roadmap (2026)
+# 🗺️ pysuiagent Roadmap
 
 This roadmap outlines the development trajectory for **pysuiagent**, moving from a foundational SDK to a comprehensive **Autonomous Agent Framework** for the Sui Ecosystem.
 
