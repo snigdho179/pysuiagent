@@ -24,6 +24,14 @@ This SDK acts as a "Translation Layer" between your AI model and the Sui Network
 
 ✅ Safety First: Includes a dry_run mode to simulate transactions before execution.
 
+
+
+## 🗺️ Roadmap
+Here is the detailed roadmap of the project.
+[👉 Click here to view the full Roadmap (2026)](ROADMAP.md)
+
+
+
 ## 📦 Installation
 
 1. Clone the repository
